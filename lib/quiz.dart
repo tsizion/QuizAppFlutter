@@ -41,6 +41,12 @@ class _Quiz extends State<Quiz> {
     if (activeScreen == 'results-screen') {
       ScreenWidget = ResultsScreen(
         chosenAnswers: selectedAnswers,
+        onRestart: () {
+          setState(() {
+            activeScreen = 'Start-Screen';
+            selectedAnswers.clear(); // Clear selected answers
+          });
+        },
       );
     }
     // TODO: implement build

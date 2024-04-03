@@ -1,12 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/data/questions.dart';
 import 'package:quizapp/models/quiz_Question.dart';
 import 'package:quizapp/questions_summary.dart';
+import 'package:quizapp/quiz.dart';
 
 class ResultsScreen extends StatelessWidget {
-  ResultsScreen({super.key, required this.chosenAnswers});
+  ResultsScreen(
+      {super.key, required this.chosenAnswers, required this.onRestart});
   final List<String> chosenAnswers;
+  final VoidCallback onRestart;
   List<Map<String, Object>> getsummmeryData() {
     final List<Map<String, Object>> summary = [];
     for (var i = 0; i < chosenAnswers.length; i++) {
@@ -24,7 +28,7 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     final summaryData = getsummmeryData();
-    final numTotalQuastion = questions.length;
+    final numTotalQuestions = questions.length;
     final numCorrectAnswer = summaryData.where((data) {
       return data['user-answer'] == data['correctAnswer'];
     }).length;
@@ -36,14 +40,34 @@ class ResultsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'you answer $numCorrectAnswer out of $numTotalQuastion questions'),
+              'You answered $numCorrectAnswer out of $numTotalQuestions questions',
+              style: GoogleFonts.ibmPlexSansHebrew(
+                  color: Colors.amberAccent,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(
               height: 30,
             ),
             QuestionSummary(getsummmeryData()),
             TextButton(
-              onPressed: () {},
-              child: const Text("Restart quiz"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Color.fromARGB(57, 197, 136, 255),
+                ),
+              ),
+              onPressed: onRestart,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Text(
+                  "Restart quiz",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
